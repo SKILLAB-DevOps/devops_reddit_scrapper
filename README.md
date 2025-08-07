@@ -73,6 +73,20 @@ curl http://localhost:8000/devops/top?limit=5
 }
 ```
 
+## Kubernetes deployment
+
+```bash
+kubectl create ns devops
+k get ns
+kubectl create deployment drs --image=komodoroot/devops_reddit_scrapper -n devops
+k get pods
+
+k create ns devops2
+cd k8s/
+helm upgrade --install drs -n devops2 .
+k get all -n devops2
+```
+
 ## Development Notes
 
 - Uses Reddit's public JSON API (no authentication required)
