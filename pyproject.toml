@@ -1,3 +1,7 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "fastapi-template"
 version = "0.1.0"
@@ -10,3 +14,8 @@ dependencies = [
     "httpx>=0.28.1",
     "pydantic>=2.11.7"
 ]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["*"]
+exclude = ["k8s*", "terraform*"]

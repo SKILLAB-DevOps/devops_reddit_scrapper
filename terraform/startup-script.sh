@@ -1,18 +1,17 @@
 sudo apt update
 curl -LsSf https://astral.sh/uv/install.sh | sh
 
-.local/bin/uv python install 3.13.8
+/root/.local/bin/uv python install 3.13.8
 
 mkdir -p /opt/devops
 cd /opt/devops
 git clone https://github.com/SKILLAB-DevOps/devops_reddit_scrapper.git
 cd devops_reddit_scrapper
-~/.local/bin/uv
+/root/.local/bin/uv venv
 
-source .venv/bin/activate
-uv pip install .
+source /opt/devops/devops_reddit_scrapper/.venv/bin/activate
 
-~/.local/bin/uv pip install .
+/root/.local/bin/uv pip install .
 
 cat > /etc/systemd/system/reddit_scrapper.service << EOF
 [Unit]

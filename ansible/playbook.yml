@@ -1,0 +1,16 @@
+---
+- name: Deploy Reddit Scraper Application
+  hosts: webservers
+  become: true
+
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+
+    - name: Install system packages
+      apt:
+        name:
+          - git
+          - curl
+        state: present

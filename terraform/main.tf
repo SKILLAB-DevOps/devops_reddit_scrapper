@@ -1,5 +1,5 @@
 provider "google" {
-  project = "your-gcp-project-id"
+  project = "my-gcp-project-id"
   region  = "us-central1"
   zone    = "us-central1-a"
 }
@@ -24,7 +24,7 @@ resource "google_compute_instance" "vm_instance" {
     auto_delete = true
 
     initialize_params {
-      image = "projects/ubuntu-os-cloud/global/images/ubuntu-2204-jammy-v20251002"
+      image = "projects/ubuntu-os-cloud/global/images/ubuntu-2404-noble-amd64-v20251014"
       size  = 10
       type  = "pd-balanced"
     }
@@ -35,7 +35,7 @@ resource "google_compute_instance" "vm_instance" {
     access_config {}
   }
 
-  metadata_startup_script = file("${path.module}/startup-script.sh")
+  # metadata_startup_script = file("${path.module}/startup-script.sh")
 }
 
 output "vm_instance_ip" {
