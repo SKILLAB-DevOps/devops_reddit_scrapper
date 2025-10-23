@@ -1,0 +1,20 @@
+---
+galaxy_info:
+  author: DevOps Team
+  description: Installs essential system packages on Debian/Ubuntu systems
+  company: SKILLAB-DevOps
+  license: MIT
+  min_ansible_version: "2.9"
+  platforms:
+    - name: Ubuntu
+      versions:
+        - all
+    - name: Debian
+      versions:
+        - all
+  galaxy_tags:
+    - system
+    - packages
+    - apt
+
+dependencies: []

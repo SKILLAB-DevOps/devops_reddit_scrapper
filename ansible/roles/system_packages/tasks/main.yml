@@ -1,0 +1,9 @@
+---
+- name: Update apt cache
+  apt:
+    update_cache: yes
+
+- name: Install system packages
+  apt:
+    name: "{{ system_packages }}"
+    state: present

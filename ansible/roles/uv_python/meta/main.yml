@@ -1,0 +1,20 @@
+---
+galaxy_info:
+  author: DevOps Team
+  description: Installs uv and Python with configurable version
+  company: SKILLAB-DevOps
+  license: MIT
+  min_ansible_version: "2.9"
+  platforms:
+    - name: Ubuntu
+      versions:
+        - all
+    - name: Debian
+      versions:
+        - all
+  galaxy_tags:
+    - python
+    - uv
+    - development
+
+dependencies: []

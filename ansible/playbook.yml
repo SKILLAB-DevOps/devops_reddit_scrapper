@@ -3,14 +3,75 @@
   hosts: webservers
   become: true
 
-  tasks:
-    - name: Update apt cache
-      apt:
-        update_cache: yes
+  vars:
+    app_directory: /opt/devops/
+    repo_directory: devops_reddit_scrapper
+    python_version: 3.13.8
+    github_repo: 'https://github.com/SKILLAB-DevOps/devops_reddit_scrapper.git'
 
-    - name: Install system packages
-      apt:
-        name:
-          - git
-          - curl
-        state: present
+  roles:
+    - role: system_packages
+    - role: uv_python
+
+  tasks:
+    - name: Create directory for Application
+      file:
+        path: "{{ app_directory }}"
+        state: directory
+
+    - name: Clone Reddit Scraper Repository
+      git:
+        repo: '{{ github_repo }}'
+        dest: '{{ app_directory }}/devops_reddit_scrapper'
+        version: 'main'
+    
+    - name: Create virtual environment
+      command: /root/.local/bin/uv venv
+      args:
+        chdir: '{{ app_directory }}/{{ repo_directory }}'
+        creates: '{{ app_directory }}/{{ repo_directory }}/.venv'
+
+    - name: Install Python dependencies
+      command: '/root/.local/bin/uv pip install .'
+      args:
+        chdir: '{{ app_directory }}/{{ repo_directory }}'
+
+    - name: Create systemd service file
+      copy:
+        dest: /etc/systemd/system/reddit_scraper.service
+        content: |
+          [Unit]
+          Description=The Reddit Scraper Service
+          After=network.target
+
+          [Service]
+          Type=simple
+          ExecStart= /opt/devops/devops_reddit_scrapper/.venv/bin/python /opt/devops/devops_reddit_scrapper/main.py
+          Restart=always
+
+          [Install]
+          WantedBy=multi-user.target
+
+    - name: Reload systemd daemon
+      systemd:
+        name: reddit_scraper
+        daemon_reload: yes
+        state: started
+        enabled: yes
+
+    - name: wait for the service to be up
+      wait_for:
+        port: 8000
+        delay: 5
+        timeout: 10
+    
+    - name: Verify Application is running
+      uri:
+        url: http://localhost:8000
+        return_content: yes
+      register: result
+
+    - name: Assert Application is running
+      debug:
+        msg: "Application is running with response: {{ result.content }}"
+      when: result.status == 200

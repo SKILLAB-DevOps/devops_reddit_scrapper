@@ -1,0 +1,16 @@
+---
+- name: Install uv
+  shell: curl -LsSf https://astral.sh/uv/install.sh | sh
+  args:
+    creates: /root/.local/bin/uv
+
+- name: Create symlink for uv in /usr/local/bin
+  file:
+    src: /root/.local/bin/uv
+    dest: /usr/local/bin/uv
+    state: link
+
+- name: Install Python version {{ python_version }}
+  command: /root/.local/bin/uv python install {{ python_version }}
+  register: install_python
+  changed_when: "'already installed' not in install_python.stdout"

@@ -1,0 +1,3 @@
+---
+# Default Python version to install
+python_version: "3.13.8"
